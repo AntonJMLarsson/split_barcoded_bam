@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 rust-htslib = { version = "*", default-features = false }
 itertools = "0.10.2"
+fnv = "1.0.7"

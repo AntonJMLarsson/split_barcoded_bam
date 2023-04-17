@@ -24,7 +24,7 @@ fn main() {
         }
     }
 
-    fn write_passing_reads(bc_dict: &std::collections::HashMap<String, usize>, bamfile: &str, files: &mut Vec<rust_htslib::bam::Writer>, barcode_tag: &str) {
+    fn write_passing_reads(bc_dict: &fnv::FnvHashMap<String, usize>, bamfile: &str, files: &mut Vec<rust_htslib::bam::Writer>, barcode_tag: &str) {
         let mut bam = rust_htslib::bam::Reader::from_path(&bamfile).unwrap();
         let Itr = bam.records();
 
@@ -48,7 +48,7 @@ fn main() {
 
     // Open up a bunch of files and write out reads for valid barcodes
     let bambcfiles: Vec<String> = bc.iter().map(|bc1| format!("{}/{}.bam", outfolder, bc1)).collect();
-    let bc_dict: std::collections::HashMap<String, usize> = bc.iter().enumerate().map(|(i, bc1)| (bc1.to_owned(), i)).collect();
+    let bc_dict: fnv::FnvHashMap<String, usize> = bc.iter().enumerate().map(|(i, bc1)| (bc1.to_owned(), i)).collect();
     let _temp = rust_htslib::bam::Reader::from_path(&bamfile).unwrap();
     let mut files = bambcfiles.iter().map(|filename| rust_htslib::bam::Writer::from_path(filename, &rust_htslib::bam::header::Header::from_template(&_temp.header().clone()), rust_htslib::bam::Format::Bam).unwrap()).collect_vec();
     drop(_temp);
